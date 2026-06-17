@@ -1,117 +1,44 @@
-# IDX Dashboard
+# IDX Stock Dashboard
 
-A comprehensive Indonesian Stock Market visualization dashboard built with Next.js 14, featuring real-time data from Yahoo Finance, beautiful interactive charts, bilingual support (English & Bahasa Indonesia), and dark/light theme.
+&gt; Dashboard visualisasi data saham Indonesia yang menampilkan pergerakan harga, volume, dan distribusi sektor dari 15 saham blue chip IDX menggunakan data real-time dari Yahoo Finance.
 
-## Features
+🌐 Demo: https://dashboard-saham-idx.vercel.app
 
-- **Real-time Data**: Live stock data from Yahoo Finance API
-- **6 Interactive Charts**: Line (IHSG), Bar (Top Movers), Doughnut (Sector), Bar (Volume), Scatter (Vol vs Change), Line (Stock Price)
-- **Dark/Light Theme**: Seamless theme switching with animated transitions
-- **Bilingual**: English & Bahasa Indonesia support via next-intl
-- **Responsive**: Mobile-first design with bottom navigation for mobile
-- **KPI Cards**: Animated count-up statistics
-- **Auto Refresh**: Automatic data refresh every 60 seconds
-- **Export**: Download data in CSV/JSON format
-- **Glassmorphism UI**: Modern glass-effect card design
-- **Particle Animation**: Floating particle background
+## Isi Dashboard
 
-## Tech Stack
+- Chart 1: IHSG Trend — Tren pergerakan Indeks Harga Saham Gabungan (IHSG) dalam 3-6 bulan terakhir (Line Chart)
+- Chart 2: Top Movers — Perbandingan top 5 saham dengan kenaikan dan penurunan harga terbesar hari ini (Bar Chart)
+- Chart 3: Distribusi Sektor — Proporsi market cap per sektor (Banking, Consumer, Mining, dll) (Doughnut Chart)
+- Chart 4: Volume Leaders — Perbandingan volume transaksi terbesar antar saham (Bar Chart)
+- Chart 5: Scatter Volume vs Change — Hubungan antara volume transaksi dan perubahan harga (Scatter Plot)
+- Chart 6: Stock Price History — Pergerakan harga historis untuk 1 saham pilihan (Line Chart)
+- Fitur interaktif: Tooltip saat hover, Filter dropdown time range (1D/1W/1M/3M/6M/1Y), Toggle dataset pada legend, Search autocomplete saham
+- Animasi: Chart.js entrance animation, Count-up number pada KPI cards, CSS fade-in & scroll reveal, Particle background, Stagger animation
 
-- **Next.js 14** (App Router)
-- **TypeScript**
-- **Tailwind CSS**
-- **shadcn/ui** components
-- **Chart.js** with react-chartjs-2
-- **Framer Motion** animations
-- **next-intl** internationalization
-- **next-themes** dark/light mode
+## Sumber Data
 
-## Getting Started
+- Nama dataset: Yahoo Finance Stock Data (Indonesia Exchange)
+- URL sumber: https://finance.yahoo.com
 
-### Prerequisites
+## Cara Jalankan di Lokal
 
-- Node.js 18+ 
-- npm or yarn
+# Jalur A (static):
+Buka index.html langsung di browser (atau pakai Live Server di VS Code)
 
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd idx-dashboard
-
-# Install dependencies
+# Jalur B (server):
 npm install
-
-# Run development server
 npm run dev
-```
+# Buka http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Teknologi
 
-### Build for Production
+- Chart.js (visualisasi)
+- HTML + CSS + JavaScript
+- Vercel (deployment)
 
-```bash
-npm run build
-npm start
-```
+## Anggota
 
-## Project Structure
-
-```
-idx-dashboard/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── [locale]/           # Localized routes (en, id)
-│   │   ├── api/stock/          # API routes for Yahoo Finance proxy
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx            # Root redirect
-│   ├── components/
-│   │   ├── ui/                 # shadcn/ui components
-│   │   ├── layout/             # Navbar, Footer, MobileNav
-│   │   ├── shared/             # Reusable components
-│   │   ├── charts/             # Chart.js components
-│   │   ├── sections/           # Page sections
-│   │   └── animations/         # Animation components
-│   ├── hooks/                  # Custom React hooks
-│   ├── lib/                    # Utility functions
-│   ├── types/                  # TypeScript types
-│   ├── data/                   # Static data
-│   ├── context/                # React context providers
-│   └── i18n/                   # next-intl translations
-├── public/                     # Static assets
-└── package.json
-```
-
-## Data
-
-The dashboard tracks 15 Indonesian blue-chip stocks:
-
-- **BBCA** - Bank Central Asia
-- **BBRI** - Bank Rakyat Indonesia
-- **BMRI** - Bank Mandiri
-- **TLKM** - Telkom Indonesia
-- **ASII** - Astra International
-- **GOTO** - GoTo Gojek Tokopedia
-- **UNVR** - Unilever Indonesia
-- **PGAS** - Perusahaan Gas Negara
-- **ANTM** - Aneka Tambang
-- **PTBA** - Bukit Asam
-- **INDF** - Indofood Sukses Makmur
-- **ICBP** - Indofood CBP Sukses
-- **KLBF** - Kalbe Farma
-- **SMGR** - Semen Indonesia
-- **EXCL** - XL Axiata
-
-## API Routes
-
-- `GET /api/stock/[ticker]` - Get stock quote and history
-- `POST /api/stock/batch` - Get multiple stock quotes
-
-## License
-
-This project is for educational purposes only. Not financial advice.
-
-## Disclaimer
-
-Data provided by Yahoo Finance. This application is for educational and informational purposes only. It does not constitute financial advice. Always do your own research before making investment decisions.
+- Rian Pramudya Amanda (1301220303)
+- Muh. Agung Gustiansyah (1301223123)
+- Mega Bunawi (1301220366)
+- M. Jibran Aflah (1301223022)
