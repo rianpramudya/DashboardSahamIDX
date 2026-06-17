@@ -2,7 +2,8 @@
 // Fetch multiple stock quotes via yahoo-finance2
 
 import { NextRequest, NextResponse } from 'next/server';
-import yahooFinance from 'yahoo-finance2';
+import YahooFinance from 'yahoo-finance2';
+const yahooFinance = new YahooFinance();
 
 const CACHE_DURATION = 60;
 
