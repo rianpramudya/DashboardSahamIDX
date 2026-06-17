@@ -291,7 +291,7 @@ export function IHSGChart({
             {fmtIDR(stats?.current ?? 0)}
           </span>
           <span className={`flex items-center gap-1 text-sm font-semibold tabular-nums ${pos ? "text-emerald-400" : "text-red-400"}`}>
-            <span>{pos ? "↗" : "↘"}</span>
+            <span>{pos ? "↗\uFE0E" : "↘\uFE0E"}</span>
             <span>
               {Math.abs(stats?.change ?? 0).toFixed(2)}
               ({pos ? "+" : ""}{stats?.changePercent.toFixed(2)}%)
