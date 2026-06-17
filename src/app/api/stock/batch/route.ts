@@ -1,9 +1,9 @@
 // API Route: POST /api/stock/batch
-// Fetch multiple stock quotes in batch
+// Fetch multiple stock quotes via yahoo-finance2
 
 import { NextRequest, NextResponse } from 'next/server';
+import yahooFinance from 'yahoo-finance2';
 
-const YAHOO_BASE = 'https://query1.finance.yahoo.com';
 const CACHE_DURATION = 60;
 
 const cache = new Map<string, { data: unknown; timestamp: number }>();
@@ -24,7 +24,6 @@ function setCachedBatch(tickers: string[], data: unknown) {
   cache.set(key, { data, timestamp: Date.now() });
 }
 
-// Sector mapping
 const SECTOR_MAP: Record<string, string> = {
   'BBCA.JK': 'financials',
   'BBRI.JK': 'financials',
@@ -61,7 +60,6 @@ const NAME_MAP: Record<string, string> = {
   'EXCL.JK': 'XL Axiata',
 };
 
-// Mock data generator for development
 function generateMockStock(ticker: string) {
   const basePrice = Math.random() * 10000 + 1000;
   const changePercent = (Math.random() - 0.5) * 5;
@@ -97,7 +95,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check cache
     const cached = getCachedBatch(tickers);
     if (cached) {
       return NextResponse.json({
@@ -109,83 +106,38 @@ export async function POST(request: NextRequest) {
     }
 
     let stocks: any[] = [];
-    
+
     try {
-      // Fetch quotes from Yahoo Finance
-      const symbols = tickers.join(',');
-      const quoteUrl = `${YAHOO_BASE}/v6/finance/quote?symbols=${encodeURIComponent(symbols)}`;
+      const rawResults = await yahooFinance.quote(tickers) as any;
+      const results = Array.isArray(rawResults) ? rawResults : [rawResults];
 
-      console.log('[POST /api/stock/batch] Fetching URL:', quoteUrl);
-
-      const quoteRes = await fetch(quoteUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        },
-        next: { revalidate: CACHE_DURATION },
+      stocks = results.map((result: any) => {
+        const symbol = result.symbol;
+        return {
+          ticker: symbol.replace('.JK', ''),
+          name: result.shortName || result.longName || NAME_MAP[symbol] || symbol,
+          sector: SECTOR_MAP[symbol] || 'unknown',
+          price: result.regularMarketPrice || 0,
+          change: result.regularMarketChange || 0,
+          changePercent: result.regularMarketChangePercent || 0,
+          volume: result.regularMarketVolume || 0,
+          marketCap: result.marketCap || 0,
+          dayHigh: result.regularMarketDayHigh || 0,
+          dayLow: result.regularMarketDayLow || 0,
+          open: result.regularMarketOpen || 0,
+          previousClose: result.regularMarketPreviousClose || 0,
+          fiftyTwoWeekHigh: result.fiftyTwoWeekHigh || 0,
+          fiftyTwoWeekLow: result.fiftyTwoWeekLow || 0,
+          avgVolume: result.averageDailyVolume3Month || 0,
+          timestamp: Date.now(),
+        };
       });
-
-      console.log('[POST /api/stock/batch] Response status:', quoteRes.status);
-
-      if (quoteRes.ok) {
-        const quoteData = await quoteRes.json();
-
-        if (quoteData.quoteResponse?.result && quoteData.quoteResponse.result.length > 0) {
-          const results = quoteData.quoteResponse.result;
-
-          stocks = results.map((result: {
-            symbol: string;
-            shortName?: string;
-            longName?: string;
-            regularMarketPrice?: number;
-            regularMarketChange?: number;
-            regularMarketChangePercent?: number;
-            regularMarketVolume?: number;
-            marketCap?: number;
-            regularMarketDayHigh?: number;
-            regularMarketDayLow?: number;
-            regularMarketOpen?: number;
-            regularMarketPreviousClose?: number;
-            fiftyTwoWeekHigh?: number;
-            fiftyTwoWeekLow?: number;
-            averageDailyVolume3Month?: number;
-          }) => {
-            const symbol = result.symbol;
-            return {
-              ticker: symbol.replace('.JK', ''),
-              name: result.shortName || result.longName || NAME_MAP[symbol] || symbol,
-              sector: SECTOR_MAP[symbol] || 'unknown',
-              price: result.regularMarketPrice || 0,
-              change: result.regularMarketChange || 0,
-              changePercent: result.regularMarketChangePercent || 0,
-              volume: result.regularMarketVolume || 0,
-              marketCap: result.marketCap || 0,
-              dayHigh: result.regularMarketDayHigh || 0,
-              dayLow: result.regularMarketDayLow || 0,
-              open: result.regularMarketOpen || 0,
-              previousClose: result.regularMarketPreviousClose || 0,
-              fiftyTwoWeekHigh: result.fiftyTwoWeekHigh || 0,
-              fiftyTwoWeekLow: result.fiftyTwoWeekLow || 0,
-              avgVolume: result.averageDailyVolume3Month || 0,
-              timestamp: Date.now(),
-            };
-          });
-        } else {
-          throw new Error('Invalid response structure from Yahoo Finance');
-        }
-      } else {
-        throw new Error(`Yahoo Finance API error: ${quoteRes.status}`);
-      }
     } catch (fetchError) {
-      console.warn('[POST /api/stock/batch] Yahoo Finance API failed, using mock data:', fetchError);
-      // Fallback to mock data
-      stocks = tickers.map(ticker => generateMockStock(ticker));
+      console.warn('[POST /api/stock/batch] Yahoo Finance failed, using mock data:', fetchError);
+      stocks = tickers.map((ticker) => generateMockStock(ticker));
     }
 
-    const responseData = {
-      stocks,
-      count: stocks.length,
-    };
-
+    const responseData = { stocks, count: stocks.length };
     setCachedBatch(tickers, responseData);
 
     return NextResponse.json({
