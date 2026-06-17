@@ -1,7 +1,7 @@
 'use client';
-
 import { useMemo, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 import { getThemeChartOptions } from './ChartProvider';
 import { formatVolume } from '@/lib/formatters';
 import type { StockQuote } from '@/types/stock';
@@ -25,20 +25,24 @@ export function VolumeChart({ stocks, isLoading = false, height = 350 }: VolumeC
 
   const chartData = useMemo(() => {
     if (!stocks.length) return { labels: [], datasets: [] };
+
     const sorted = [...stocks].sort((a, b) => b.volume - a.volume).slice(0, 10);
     return {
       labels: sorted.map((s) => s.ticker),
       datasets: [{
         label: 'Volume',
         data: sorted.map((s) => s.volume),
-        backgroundColor: sorted.map((_, i) => { const opacity = 1 - (i * 0.08); return `rgba(0, 212, 255, ${opacity})`; }),
+        backgroundColor: sorted.map((_, i) => {
+          const opacity = 1 - (i * 0.08);
+          return `rgba(0, 212, 255, ${opacity})`;
+        }),
         borderRadius: 6,
         borderSkipped: false as const,
       }],
     };
   }, [stocks]);
 
-  const options = useMemo(() => {
+  const options = useMemo((): ChartOptions<'bar'> => {
     const base = getThemeChartOptions(isDark);
     return {
       ...base,
@@ -55,9 +59,15 @@ export function VolumeChart({ stocks, isLoading = false, height = 350 }: VolumeC
       },
       scales: {
         ...base.scales,
-        y: { ...base.scales?.y, ticks: { ...base.scales?.y?.ticks, callback: (value: string | number) => formatVolume(typeof value === 'string' ? parseFloat(value) : value) } },
+        y: {
+          ...base.scales?.y,
+          ticks: {
+            ...base.scales?.y?.ticks,
+            callback: (value: string | number) => formatVolume(typeof value === 'string' ? parseFloat(value) : value),
+          },
+        },
       },
-    };
+    } as ChartOptions<'bar'>;
   }, [isDark]);
 
   if (isLoading) return <div className="animate-pulse" style={{ height }}><div className="h-full bg-muted rounded-lg" /></div>;

@@ -1,7 +1,7 @@
 'use client';
-
 import { useMemo, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 import { getThemeChartOptions } from './ChartProvider';
 import type { StockQuote } from '@/types/stock';
 
@@ -24,9 +24,11 @@ export function TopMoversChart({ stocks, isLoading = false, height = 350 }: TopM
 
   const chartData = useMemo(() => {
     if (!stocks.length) return { labels: [], datasets: [] };
+
     const sorted = [...stocks].sort((a, b) => b.changePercent - a.changePercent);
     const gainers = sorted.slice(0, 5);
     const losers = sorted.slice(-5).reverse();
+
     return {
       labels: [...gainers.map((s) => s.ticker), ...losers.map((s) => s.ticker)],
       datasets: [{
@@ -39,7 +41,7 @@ export function TopMoversChart({ stocks, isLoading = false, height = 350 }: TopM
     };
   }, [stocks]);
 
-  const options = useMemo(() => {
+  const options = useMemo((): ChartOptions<'bar'> => {
     const base = getThemeChartOptions(isDark);
     return {
       ...base,
@@ -57,7 +59,7 @@ export function TopMoversChart({ stocks, isLoading = false, height = 350 }: TopM
           },
         },
       },
-    };
+    } as ChartOptions<'bar'>;
   }, [isDark]);
 
   if (isLoading) return <div className="animate-pulse" style={{ height }}><div className="h-full bg-muted rounded-lg" /></div>;

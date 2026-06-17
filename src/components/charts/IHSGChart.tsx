@@ -1,7 +1,7 @@
 'use client';
-
 import { useMemo, useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 import { getThemeChartOptions } from './ChartProvider';
 import { formatChartDate } from '@/lib/formatters';
 import type { StockHistory } from '@/types/stock';
@@ -27,8 +27,10 @@ export function IHSGChart({ history, isLoading = false, height = 350 }: IHSGChar
 
   const chartData = useMemo(() => {
     if (!history.length) return { labels: [], datasets: [] };
+
     const labels = history.map((h) => formatChartDate(new Date(h.date).getTime() / 1000, '1m'));
     const prices = history.map((h) => h.close);
+
     return {
       labels,
       datasets: [{
@@ -55,7 +57,7 @@ export function IHSGChart({ history, isLoading = false, height = 350 }: IHSGChar
     };
   }, [history]);
 
-  const options = useMemo(() => {
+  const options = useMemo((): ChartOptions<'line'> => {
     const base = getThemeChartOptions(isDark);
     return {
       ...base,
@@ -86,11 +88,21 @@ export function IHSGChart({ history, isLoading = false, height = 350 }: IHSGChar
           },
         },
       },
-    };
+    } as ChartOptions<'line'>;
   }, [isDark]);
 
-  if (isLoading) return <div className="animate-pulse space-y-4"><div className="h-4 w-32 bg-muted rounded" /><div className="bg-muted rounded-lg" style={{ height }} /></div>;
-  if (!history.length) return <div className="flex items-center justify-center" style={{ height }}><p className="text-muted-foreground text-sm">No data available</p></div>;
+  if (isLoading) return (
+    <div className="animate-pulse space-y-4">
+      <div className="h-4 w-32 bg-muted rounded" />
+      <div className="bg-muted rounded-lg" style={{ height }} />
+    </div>
+  );
+
+  if (!history.length) return (
+    <div className="flex items-center justify-center" style={{ height }}>
+      <p className="text-muted-foreground text-sm">No data available</p>
+    </div>
+  );
 
   return <div style={{ height }}><Line data={chartData} options={options} /></div>;
 }

@@ -18,7 +18,8 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 // Disable datalabels by default to prevent errors with empty datasets
-ChartDataLabels.defaults.display = false;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(ChartDataLabels as any).defaults = { ...(ChartDataLabels as any).defaults, display: false };
 
 // Register all required Chart.js components
 ChartJS.register(
@@ -85,12 +86,12 @@ export function getThemeChartOptions(isDark: boolean): Partial<ChartOptions> {
     },
     scales: {
       x: {
-        grid: { color: gridColor, drawBorder: false },
+        grid: { color: gridColor },
         ticks: { color: textColor, font: { size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 },
         border: { display: false },
       },
       y: {
-        grid: { color: gridColor, drawBorder: false },
+        grid: { color: gridColor },
         ticks: { color: textColor, font: { size: 10 } },
         border: { display: false },
       },
