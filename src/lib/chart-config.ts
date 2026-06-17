@@ -197,7 +197,7 @@ export function getDoughnutChartOptions(isDark: boolean) {
         cornerRadius: 8,
         padding: 12,
         callbacks: {
-          label: function(context: { parsed: number; label: string }) {
+          label: function(context: { parsed: number; label: string; dataset: { data: number[] } }) {
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
             const percentage = ((context.parsed / total) * 100).toFixed(1);
             return `${context.label}: ${percentage}%`;
