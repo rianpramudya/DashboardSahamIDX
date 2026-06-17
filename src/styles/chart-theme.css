@@ -1,0 +1,241 @@
+/* ========================================
+   Chart.js Theme Styles
+   ======================================== */
+
+/* Chart container */
+.chart-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Ensure charts are responsive */
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Chart tooltip customization */
+.chartjs-tooltip {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 212, 255, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.light .chartjs-tooltip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Chart tooltip title */
+.chartjs-tooltip-title {
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  margin-bottom: 4px !important;
+}
+
+.light .chartjs-tooltip-title {
+  color: #1e293b !important;
+}
+
+/* Chart tooltip body */
+.chartjs-tooltip-body {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+}
+
+.light .chartjs-tooltip-body {
+  color: #64748b !important;
+}
+
+/* Chart tooltip color box */
+.chartjs-tooltip-color-box {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  margin-right: 6px !important;
+}
+
+/* Legend customization */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.light .chart-legend-item {
+  color: #64748b;
+}
+
+.chart-legend-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Grid line styling */
+.chart-grid-line {
+  stroke: rgba(255, 255, 255, 0.05) !important;
+  stroke-dasharray: none !important;
+}
+
+.light .chart-grid-line {
+  stroke: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Axis label styling */
+.chart-axis-label {
+  fill: #94a3b8 !important;
+  font-size: 10px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.light .chart-axis-label {
+  fill: #64748b !important;
+}
+
+/* Data label (used with datalabels plugin) */
+.chart-data-label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+/* Doughnut chart center text */
+.doughnut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.doughnut-center-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.light .doughnut-center-value {
+  color: #1e293b;
+}
+
+.doughnut-center-label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.light .doughnut-center-label {
+  color: #64748b;
+}
+
+/* Chart loading state */
+.chart-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.05) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: chartShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes chartShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Chart error state */
+.chart-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #ef4444;
+}
+
+.chart-error-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}
+
+/* Responsive chart heights */
+@media (max-width: 767px) {
+  .chart-responsive {
+    height: 250px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .chart-responsive {
+    height: 300px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chart-responsive {
+    height: 350px !important;
+  }
+}
+
+/* Point hover effect */
+.chart-point-hover {
+  transition: all 0.2s ease;
+}
+
+.chart-point-hover:hover {
+  r: 6;
+  stroke-width: 3;
+}
+
+/* Bar hover effect */
+.chart-bar-hover {
+  transition: all 0.2s ease;
+}
+
+.chart-bar-hover:hover {
+  opacity: 0.8;
+}
+
+/* Line chart area fill */
+.chart-area-fill {
+  opacity: 0.1;
+}
+
+/* Scatter point styling */
+.chart-scatter-point {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.chart-scatter-point:hover {
+  r: 10;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 4px currentColor);
+}
