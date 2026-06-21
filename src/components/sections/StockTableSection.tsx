@@ -15,7 +15,7 @@ import { SECTORS } from '@/data/sectors';
 import { exportStockData } from '@/lib/export-utils';
 import { formatRupiah, formatPercent, formatVolume, formatMarketCap } from '@/lib/formatters';
 import { t as translate, getSectorName } from '@/lib/i18n';
-import type { StockQuote, SortField, SortDirection } from '@/types/stock';
+import type { SortField, SortDirection } from '@/types/stock';
 
 interface StockTableSectionProps {
   locale?: string;

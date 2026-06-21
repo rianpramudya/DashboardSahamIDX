@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { GlassCard } from '@/components/shared/GlassCard';
-import { t as translate } from '@/lib/i18n';
 
 interface FAQItemProps {
   question: string;

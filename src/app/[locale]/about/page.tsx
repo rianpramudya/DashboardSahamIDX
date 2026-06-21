@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { FAQSection } from '@/components/sections/FAQSection';
-import { DataSourceSection } from '@/components/sections/DataSourceSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Github, Mail, Database, Code2, Globe, RefreshCw } from 'lucide-react';
